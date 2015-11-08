@@ -9,12 +9,17 @@ user_location = get_location(user_location)
 
 def get_forecast(user_location)
 	w_api = Wunderground.new("6d65d1572530e62a")
-	whole_forecast = w_api.forecast_for(user_location)
-	forecast_array = whole_forecast.fetch('simpleforecast')
-	today_forecast_array = forecast_array.fetch({"period"=>1})
-	forecast_summary = today_forecast_array.values(conditions)
-	puts forecast_summary
+	whole_forecast_hash = w_api.forecast_for(user_location).fetch('forecast')
+
+	simple_forecast_hash = whole_forecast_hash.fetch('simpleforecast')
+
+	forecastday_array = simple_forecast_hash.fetch('forecastday')
+
+	forecast_date = forecastday_array.first
+	
+	forecast_conditions = forecast_date.fetch('conditions')
+
+	puts forecast_conditions
 end
 
-forecast_summary = get_forecast(user_location)
-
+forecast_conditions = get_forecast(user_location)
